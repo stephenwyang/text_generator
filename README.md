@@ -18,4 +18,4 @@ Line 64 - Change the amount of images we want to generate per number
 
 Line 59 - createRandomLoc, turn to False if you want it in the center instead of randomly around the square
 ## Possible future changes
-Instead of having the user download fonts and put them in a folder try to have the program either scan the computer to find where the font files are located, or 
+Instead of having the user download fonts and put them in a folder try to have the program either scan the computer to find where the font files are located, or write a function to list out file name/location for it.
