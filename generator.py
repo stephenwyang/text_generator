@@ -1,6 +1,7 @@
 from PIL import Image, ImageDraw, ImageFont
 import random
 import time
+import os
 random.seed(time.time())
 
 # References - 
@@ -13,7 +14,8 @@ random.seed(time.time())
 # Start big, resize using this code
 # https://stackoverflow.com/questions/42516212/how-to-save-a-resized-image-in-python
 def resize_img(img, new_w):
-    new_img = img.resize((new_w, new_w), Image.ANTIALIAS)
+    new_img = img.resize((new_w, new_w),)
+    # new_img = img.resize((new_w, new_w), Image.ANTIALIAS)
     return new_img
 
 def image_generate(message, font, fontColor, createRandomLoc = False, randomAmount = 0):
@@ -58,7 +60,37 @@ def run_image_generator(font, font_color, amount):
     for each_num in msg:
         image_generate(each_num, font, font_color , createRandomLoc = True, randomAmount = amount)
 
+def prepareResultDirs():
+    result_dir = "./res"
+    os.makedirs(result_dir, exist_ok=True)
+    for dir in "123456789":
+        dir_name = f'{result_dir}/id{dir}'
+        os.makedirs(dir_name, exist_ok=True)
+
 if __name__ == "__main__":
-    font_to_use = ImageFont.truetype('fonts/roboto-12.ttf', 100)
-    font_color = 'black'
-    run_image_generator(font_to_use, font_color, amount = 10)
+    fontsFiles = []
+    directory_path = "./fonts"
+    
+    all_entries = os.listdir(directory_path)
+
+    for entry in all_entries:
+        full_path = os.path.join(directory_path, entry)
+        if os.path.isfile(full_path):
+            if full_path.endswith(".ttf") or full_path.endswith(".otf"):
+                fontsFiles.append(full_path)
+    
+    prepareResultDirs()
+
+    for font in fontsFiles:
+        sizeUsed = set()
+        for i in range(20):
+            size = random.randint(180, 250)
+
+            while size in sizeUsed :
+                size = random.randint(180, 250)
+
+            sizeUsed.add(size)
+            print("Font:", font, "with size", size)
+            font_to_use = ImageFont.truetype(font, size)
+            font_color = 'black'
+            run_image_generator(font_to_use, font_color, amount = 10)
