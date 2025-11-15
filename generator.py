@@ -41,7 +41,11 @@ def image_generate(message, font, fontColor, createRandomLoc = False, randomAmou
             # to avoid overlap
             clear_im = image.copy()
             draw = ImageDraw.Draw(clear_im)
-            r_x, r_y = random.random() * (W - text_w), random.random() * (H - text_h)
+            # Adjusting randomness to be more close to the center
+            # r_x, r_y = random.random() * (W - text_w), random.random() * (H - text_h) OLD CODE
+            # Adjust the randint values depending on how far away you want it from the center, since current size is 250
+            # 25 is 10% of it, but can be adjusted even smaller if needed
+            r_x, r_y = (W-text_w)/2 + random.randint(-25, 25), (H-text_h)/2 + random.randint(-25, 25)
             draw.text((r_x, r_y), message, font=font, fill=fontColor)
             clear_im = resize_img(clear_im, 96)
             save_path = f'res/id{message}/photo_{random.randint(100 * num, 100 * (num + 1))}_{random.randint(0, 10000000)}.png'
@@ -83,7 +87,7 @@ if __name__ == "__main__":
 
     for font in fontsFiles:
         sizeUsed = set()
-        for i in range(20):
+        for i in range(10):
             size = random.randint(180, 250)
 
             while size in sizeUsed :
