@@ -42,10 +42,21 @@ def image_generate(message, font, fontColor, createRandomLoc = False, randomAmou
             clear_im = image.copy()
             draw = ImageDraw.Draw(clear_im)
             # Adjusting randomness to be more close to the center
-            # r_x, r_y = random.random() * (W - text_w), random.random() * (H - text_h) OLD CODE
-            # Adjust the randint values depending on how far away you want it from the center, since current size is 250
-            # 25 is 10% of it, but can be adjusted even smaller if needed
-            r_x, r_y = (W-text_w)/2 + random.randint(-25, 25), (H-text_h)/2 + random.randint(-25, 25)
+            # r_x, r_y = random.random() * (W - text_w), random.random() * (H - text_h) OLD CODE            
+            # Adjust the randomness to be within the middle column (83 px)
+            mid = 83
+            offset = 21 # mid / 4
+            cx, cy = (W - text_w), (H - text_h)
+            if cx > mid:    # Smaller than middle column, can allow for more random movement
+                dx = cx - mid + offset
+            else:
+                dx = cx // 2
+            if cy > mid:
+                dy = cy - mid + offset
+            else:
+                dy = cy // 2
+            r_x, r_y = cx + random.randint(-dx, dx), cy + random.randint(-dy, dy)
+            
             draw.text((r_x, r_y), message, font=font, fill=fontColor)
             clear_im = resize_img(clear_im, 96)
             save_path = f'res/id{message}/photo_{random.randint(100 * num, 100 * (num + 1))}_{random.randint(0, 10000000)}.png'
