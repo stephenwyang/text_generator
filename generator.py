@@ -46,7 +46,7 @@ def image_generate(message, font, fontColor, createRandomLoc = False, randomAmou
             # Adjust the randomness to be within the middle column (83 px)
             mid = 83
             offset = 21 # mid / 4
-            cx, cy = (W - text_w), (H - text_h)
+            cx, cy = (W - text_w) // 2, (H - text_h) // 2
             if cx > mid:    # Smaller than middle column, can allow for more random movement
                 dx = cx - mid + offset
             else:
